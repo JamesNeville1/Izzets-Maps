@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Profiling.LowLevel;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
@@ -10,6 +12,8 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//Credits:
+// - https://www.youtube.com/watch?v=qNZ-0-7WuS8
 public class SCR_generate_map : MonoBehaviour {
 
     [Header("Require Dev Input")]
@@ -121,7 +125,25 @@ public class SCR_generate_map : MonoBehaviour {
     #endregion
     #region Main
     private void perlinNoiseMain() {
-        //Vector2 currentPos = returnStartingPos();
+        Vector2 rand = new Vector2(UnityEngine.Random.Range(1,10000), UnityEngine.Random.Range(1, 10000));
+        Vector2[] v = mapData.Keys.ToArray();
+        foreach (Vector2 key in v) {
+            mapData[key] = tileColours[getPerlinID(key, rand)];
+        }
+    }
+    private int getPerlinID(Vector2 v, Vector2 rand) {
+        float raw_perlin = Mathf.PerlinNoise(
+            (v.x + rand.x) / islandSize,
+            (v.y + rand.y) / islandSize
+        );
+        float clamp_perlin = Mathf.Clamp01(raw_perlin);
+        float scaled_perlin = clamp_perlin * tileColours.Count;
+
+        // Replaced 4 with tileset.Count to make adding tiles easier
+        if (scaled_perlin == tileColours.Count) {
+            scaled_perlin = (tileColours.Count - 1);
+        }
+        return Mathf.FloorToInt(scaled_perlin);
     }
     private void walkCycleMain() {
         //Generate Map, iterate until completed
