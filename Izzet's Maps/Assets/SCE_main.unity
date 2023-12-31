@@ -300,8 +300,10 @@ MonoBehaviour:
   sizeMax: 400
   tileColours:
   - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0.64779866, g: 0, b: 0, a: 1}
+  - {r: 0.72955966, g: 0, b: 0, a: 1}
+  - {r: 0.8616352, g: 0, b: 0, a: 1}
   - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0.1600213, a: 1}
   startInCentre: 1
   buttonsParent: {fileID: 1772290780}
   buttonPrefab: {fileID: 9036815834130199037, guid: df81474a38d50b940b377c6d5a10935c, type: 3}

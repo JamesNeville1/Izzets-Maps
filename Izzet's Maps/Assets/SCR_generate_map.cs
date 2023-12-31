@@ -69,7 +69,7 @@ public class SCR_generate_map : MonoBehaviour {
         buttonsParent = GameObject.Find("Buttons");
         SCR_utils.monoFunctions.createButton("Walk Cycle", walkCycleButton, buttonPrefab, buttonsParent);
         SCR_utils.monoFunctions.createButton("Perlin Noise", perlinNoiseButton, buttonPrefab, buttonsParent);
-        SCR_utils.monoFunctions.createButton("Save As", displayAsImage, buttonPrefab, buttonsParent);
+        SCR_utils.monoFunctions.createButton("Save As", displayAsImage, buttonPrefab, buttonsParent); //To-Do
         //SCR_utils.monoFunctions.createButton("Sprites", displayAsSprites, buttonPrefab, buttonsParent);
 
         fieldParent = GameObject.Find("Fields");
@@ -85,6 +85,9 @@ public class SCR_generate_map : MonoBehaviour {
         size = 2;
         islandSize = 2;
         iterations = 2;
+
+        islandSizeMax = 16000;
+        iterationsMax = 16000;
     }
     #region Buttons
     public void walkCycleButton() {
@@ -110,8 +113,6 @@ public class SCR_generate_map : MonoBehaviour {
     }
     public void updateSize(int newValue) {
         size = newValue;
-        iterationsMax = size * size;
-        islandSizeMax = size * size;
     }
     public void updateIteration(int newValue) {
         iterations = newValue;
@@ -176,7 +177,11 @@ public class SCR_generate_map : MonoBehaviour {
         map.gameObject.SetActive(true);
 
         Texture2D texture = new Texture2D(width, height);
-        texture.SetPixels(mapData.Values.ToArray());
+
+        for (int i = 0; i < mapData.Count; i++) {
+            Vector2 pos = mapData.ElementAt(i).Key;
+            texture.SetPixel((int)pos.x, (int)pos.y, mapData[pos]);
+        }
         texture.filterMode = FilterMode.Point;
 
         texture.Apply();
@@ -184,7 +189,7 @@ public class SCR_generate_map : MonoBehaviour {
 
         Camera.main.orthographicSize = 1;
     }
-    private void displayAsSprites() {
+    private void displayAsSprites() { //Depreciated, only used for debugging
         spritesParent.SetActive(true);
         map.gameObject.SetActive(false);
 
