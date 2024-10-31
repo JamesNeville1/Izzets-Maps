@@ -4,16 +4,17 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Profiling.LowLevel;
 using Unity.VisualScripting;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
-//Credits:
-// - https://www.youtube.com/watch?v=qNZ-0-7WuS8
 public class SCR_generate_map : MonoBehaviour {
 
     [Header("Require Dev Input")]
@@ -24,14 +25,16 @@ public class SCR_generate_map : MonoBehaviour {
     [Tooltip("")][SerializeField]
     private Sprite sprite;
 
-    [Tooltip("Size of grid")] [SerializeField]
-    private int size;
-
+    [Tooltip("Size of grid X")] [SerializeField]
     private int height;
+    [Tooltip("Size of grid Y")] [SerializeField]
     private int width;
 
     [Tooltip("Number of iterations while generating")][SerializeField]
     private int iterations;
+
+    [Tooltip("")][SerializeField]
+    private int perlinScale;
 
     [Tooltip("")][SerializeField]
     private int islandSize;
@@ -44,16 +47,12 @@ public class SCR_generate_map : MonoBehaviour {
 
 
     [Tooltip("")][SerializeField]
-    private List<Color> tileColours = new List<Color>();
+    private Color background;
+    [Tooltip("")][SerializeField]
+    private Color tiles;
 
     [Tooltip("Should start in centre? If true begin in centre, if false begin with random tile")][SerializeField]
     private bool startInCentre;
-
-    //Hold entire map in dictionary, easy way of finding near tiles from base tile
-    private Dictionary<Vector2, Color> mapData = new Dictionary<Vector2, Color>();
-
-    //
-    private GameObject spritesParent;
 
     [Header("UI")]
     [Tooltip("")][SerializeField]
@@ -67,22 +66,18 @@ public class SCR_generate_map : MonoBehaviour {
 
     private void Start() {
         buttonsParent = GameObject.Find("Buttons");
-        SCR_utils.monoFunctions.createButton("Walk Cycle", walkCycleButton, buttonPrefab, buttonsParent);
-        SCR_utils.monoFunctions.createButton("Perlin Noise", perlinNoiseButton, buttonPrefab, buttonsParent);
-        SCR_utils.monoFunctions.createButton("Save As", displayAsImage, buttonPrefab, buttonsParent); //To-Do
-        //SCR_utils.monoFunctions.createButton("Sprites", displayAsSprites, buttonPrefab, buttonsParent);
+        SCR_utils.monoFunctions.createButton("Walk Cycle", WalkCycleButton, buttonPrefab, buttonsParent);
+        SCR_utils.monoFunctions.createButton("Perlin Noise", PerlinNoiseButton, buttonPrefab, buttonsParent);
+        //SCR_utils.monoFunctions.createButton("Save As", DisplayAsImage, buttonPrefab, buttonsParent); //ToDo
 
         fieldParent = GameObject.Find("Fields");
         TMP_InputField sizeField = SCR_utils.monoFunctions.createField("Size Field", fieldPrefab, fieldParent);
         TMP_InputField iterationField = SCR_utils.monoFunctions.createField("Iteration Field", fieldPrefab, fieldParent);
         TMP_InputField islandSizeField = SCR_utils.monoFunctions.createField("Island Size Field", fieldPrefab, fieldParent);
-        sizeField.onEndEdit.AddListener(delegate { onUpdateField(sizeField, updateSize, sizeMax, 2); });
-        iterationField.onEndEdit.AddListener(delegate { onUpdateField(iterationField, updateIteration, iterationsMax); });
-        islandSizeField.onEndEdit.AddListener(delegate { onUpdateField(islandSizeField, updateIslandSize, islandSizeMax); });
+        sizeField.onEndEdit.AddListener(delegate { OnUpdateField(sizeField, UpdateSize, sizeMax, 2); });
+        iterationField.onEndEdit.AddListener(delegate { OnUpdateField(iterationField, UpdateIteration, iterationsMax); });
+        islandSizeField.onEndEdit.AddListener(delegate { OnUpdateField(islandSizeField, UpdateIslandSize, islandSizeMax); });
 
-        spritesParent = new GameObject("Sprites Parent");
-
-        size = 2;
         islandSize = 2;
         iterations = 2;
 
@@ -90,19 +85,15 @@ public class SCR_generate_map : MonoBehaviour {
         iterationsMax = 16000;
     }
     #region Buttons
-    public void walkCycleButton() {
-        mapData.Clear();
-        createBlank();
-        walkCycleMain();
-        displayAsImage();
+    public void WalkCycleButton() {
+        //CreateBlank();
+        //WalkCycleMain();
     }
-    public void perlinNoiseButton() {
-        mapData.Clear();
-        createBlank();
-        perlinNoiseMain();
-        displayAsImage();
+    public void PerlinNoiseButton() {
+        //CreateBlank();
+        PerlinNoiseMain();
     }
-    public void onUpdateField(TMP_InputField field,Action<int> action, int max, int min = 0) {
+    public void OnUpdateField(TMP_InputField field,Action<int> action, int max, int min = 0) {
         int input = SCR_utils.functions.validateIntFromString(field.text);
 
         input = Mathf.Clamp(input, min, max);
@@ -111,77 +102,45 @@ public class SCR_generate_map : MonoBehaviour {
 
         action(input);
     }
-    public void updateSize(int newValue) {
-        size = newValue;
+    public void UpdateSize(int newValue) {
+        width = newValue;
+        height = newValue;
     }
-    public void updateIteration(int newValue) {
+    public void UpdateIteration(int newValue) {
         iterations = newValue;
     }
-    public void updateIslandSize(int newValue) {
+    public void UpdateIslandSize(int newValue) {
         islandSize = newValue;
     }
-    public void reload() {
+    public void Reload() {
         SceneManager.LoadScene(0);
     }
     #endregion
     #region Main
-    private void perlinNoiseMain() {
+    private void PerlinNoiseMain() {
         Vector2 rand = new Vector2(UnityEngine.Random.Range(1,10000), UnityEngine.Random.Range(1, 10000));
-        Vector2[] v = mapData.Keys.ToArray();
-        foreach (Vector2 key in v) {
-            mapData[key] = tileColours[getPerlinID(key, rand)];
-        }
-    }
-    private int getPerlinID(Vector2 v, Vector2 rand) {
-        float raw_perlin = Mathf.PerlinNoise(
-            (v.x + rand.x) / islandSize,
-            (v.y + rand.y) / islandSize
-        );
-        float clamp_perlin = Mathf.Clamp01(raw_perlin);
-        float scaled_perlin = clamp_perlin * tileColours.Count;
-
-        // Replaced 4 with tileset.Count to make adding tiles easier
-        if (scaled_perlin == tileColours.Count) {
-            scaled_perlin = (tileColours.Count - 1);
-        }
-        return Mathf.FloorToInt(scaled_perlin);
-    }
-    private void walkCycleMain() {
-        //Generate Map, iterate until completed
-        Vector2 currentPos = returnStartingPos();
-
-        mapData[currentPos] = tileColours[1];
-
-        int currentIslandSize = 0;
-        for (int i = 0; i < iterations; i++) {
-            Vector2 dir = returnRandomDir();
-            if (mapData.ContainsKey(currentPos + dir)) {
-                if(currentIslandSize <= islandSize) {
-                    currentPos = currentPos + dir;
-                    currentIslandSize++;
-                }
-                else {
-                    currentPos = returnRandomTile();
-                    currentIslandSize = 0;
-                }
-            }
-            else {
-                currentPos = returnRandomTile();
-                currentIslandSize = 0;
-            }
-            mapData[currentPos] = tileColours[1];
-        }
-    }
-    private void displayAsImage() {
-        spritesParent.SetActive(false);
-        map.gameObject.SetActive(true);
 
         Texture2D texture = new Texture2D(width, height);
 
-        for (int i = 0; i < mapData.Count; i++) {
-            Vector2 pos = mapData.ElementAt(i).Key;
-            texture.SetPixel((int)pos.x, (int)pos.y, mapData[pos]);
+        float yCounter = 0.0f;
+        int x = 0;
+        for (int i = 0; i < texture.GetPixels().Length; i++) {
+            int y = Mathf.FloorToInt(yCounter);
+            Debug.Log($"x: {x}, y: {y}");
+
+            int id = GetPerlinID(new Vector2(x, y), rand);
+
+            if (id == 0) texture.SetPixel(x, y, background);
+            else texture.SetPixel(x, y, tiles);
+
+            yCounter = yCounter + (1.0f / width);
+            
+            x++;
+            if (x > width -1) {
+                x = 0;
+            }
         }
+
         texture.filterMode = FilterMode.Point;
 
         texture.Apply();
@@ -189,62 +148,89 @@ public class SCR_generate_map : MonoBehaviour {
 
         Camera.main.orthographicSize = 1;
     }
-    private void displayAsSprites() { //Depreciated, only used for debugging
-        spritesParent.SetActive(true);
-        map.gameObject.SetActive(false);
+    private int GetPerlinID(Vector2 v, Vector2 rand) {
+        float raw_perlin = Mathf.PerlinNoise(
+            (v.x + rand.x) / islandSize,
+            (v.y + rand.y) / islandSize
+        );
+        float clamp_perlin = Mathf.Clamp01(raw_perlin);
+        float scaled_perlin = clamp_perlin * perlinScale;
 
-        Destroy(spritesParent);
-        spritesParent = new GameObject("Sprites Parent");
-
-        for (int i = 0; i < mapData.Count; i++) {
-            GameObject obj = new GameObject("a", typeof (SpriteRenderer));
-            SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-            sr.sprite = sprite;
-            sr.color = mapData.ElementAt(i).Value;
-            obj.transform.position = mapData.ElementAt(i).Key;
-            obj.transform.parent = spritesParent.transform;
+        if (scaled_perlin == perlinScale) {
+            scaled_perlin = (perlinScale - 1);
         }
-    }
-    private Vector2 returnStartingPos() {
-        Vector2 currentPos;
-        if (startInCentre) currentPos = returnCentre();
-        else currentPos = returnRandomTile();
-
-        currentPos.x = MathF.Round(currentPos.x);
-        currentPos.y = MathF.Round(currentPos.y);
-
-        return currentPos;
-    }
-    private Vector2 returnCentre() {
-        Vector2 v = (mapData.Keys.Last() + mapData.Keys.First())/2;
-        return v;
+        return Mathf.FloorToInt(scaled_perlin);
     }
 
-    private Vector2 returnRandomTile() {
-        Vector2 v = mapData.ElementAt(UnityEngine.Random.Range(0, mapData.Count)).Key;
-        return v;
-    }
+    //private void WalkCycleMain() {
+    //    //Generate Map, iterate until completed
+    //    Vector2 currentPos = ReturnStartingPos();
 
-    private Vector2 returnRandomDir() {
-        int i = UnityEngine.Random.Range(1, 5);
-        switch (i) {
-            case 1: return Vector2.left;
-            case 2: return Vector2.right;
-            case 3: return Vector2.up;
-            case 4: return Vector2.down;
-        }
-        return Vector2.left;
-    }
-    private void createBlank() {
-        if (size < 2) size = 2;
-        height = size;
-        width = size;
-        for (int x = 1; x < width + 1; x++) {
-            for (int y = 1; y < height + 1; y++) {
-                Vector2 tilePos = new Vector2(x, y);
-                mapData.Add(tilePos, tileColours[0]);
-            }
-        }
-    }
+    //    mapData[currentPos] = tileColours[1];
+
+    //    int currentIslandSize = 0;
+    //    for (int i = 0; i < iterations; i++) {
+    //        Vector2 dir = ReturnRandomDir();
+    //        if (mapData.ContainsKey(currentPos + dir)) {
+    //            if(currentIslandSize <= islandSize) {
+    //                currentPos = currentPos + dir;
+    //                currentIslandSize++;
+    //            }
+    //            else {
+    //                currentPos = ReturnRandomTile();
+    //                currentIslandSize = 0;
+    //            }
+    //        }
+    //        else {
+    //            currentPos = ReturnRandomTile();
+    //            currentIslandSize = 0;
+    //        }
+    //        mapData[currentPos] = tileColours[1];
+    //    }
+    //}
+    //private Vector2 ReturnStartingPos() {
+    //    Vector2 currentPos;
+    //    if (startInCentre) currentPos = ReturnCentre();
+    //    else currentPos = ReturnRandomTile();
+
+    //    currentPos.x = MathF.Round(currentPos.x);
+    //    currentPos.y = MathF.Round(currentPos.y);
+
+    //    return currentPos;
+    //}
+    //private Vector2 ReturnCentre() {
+    //    Vector2 v = (mapData.Keys.Last() + mapData.Keys.First())/2;
+    //    return v;
+    //}
+
+    //private Vector2 ReturnRandomTile() {
+    //    Vector2 v = mapData.ElementAt(UnityEngine.Random.Range(0, mapData.Count)).Key;
+    //    return v;
+    //}
+
+    //private Vector2 ReturnRandomDir() {
+    //    int i = UnityEngine.Random.Range(1, 5);
+    //    switch (i) {
+    //        case 1: return Vector2.left;
+    //        case 2: return Vector2.right;
+    //        case 3: return Vector2.up;
+    //        case 4: return Vector2.down;
+    //    }
+    //    return Vector2.left;
+    //}
+    //private void createblank()
+    //{
+    //    if (size < 2) size = 2;
+    //    height = size;
+    //    width = size;
+    //    for (int x = 1; x < width + 1; x++)
+    //    {
+    //        for (int y = 1; y < height + 1; y++)
+    //        {
+    //            vector2 tilepos = new vector2(x, y);
+    //            mapdata.add(tilepos, tilecolours[0]);
+    //        }
+    //    }
+    //}
     #endregion
 }

@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -38,13 +38,11 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 12
-  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -67,9 +65,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 0
@@ -294,16 +289,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 1709124764}
   sprite: {fileID: 21300000, guid: 32863a8fcbd188c40a5ba4e1e39c09b3, type: 3}
-  size: 0
+  height: 0
+  width: 0
   iterations: 0
+  perlinScale: 100
   islandSize: 0
   sizeMax: 400
-  tileColours:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.64779866, g: 0, b: 0, a: 1}
-  - {r: 0.72955966, g: 0, b: 0, a: 1}
-  - {r: 0.8616352, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
+  background: {r: 0.3584906, g: 0, b: 0.27777416, a: 1}
+  tiles: {r: 0, g: 1, b: 0.563025, a: 1}
   startInCentre: 1
   buttonsParent: {fileID: 1772290780}
   buttonPrefab: {fileID: 9036815834130199037, guid: df81474a38d50b940b377c6d5a10935c, type: 3}
@@ -414,7 +407,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1716616368

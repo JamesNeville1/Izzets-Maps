@@ -34,6 +34,24 @@ public class SCR_utils {
 
             return valid;
         }
+        public static float ConvertBetweenScales_original(float old_value, float first_scale_min, float first_scale_max, float second_scale_min, float second_scale_max)
+        {
+            /** Given a chosen value on one scale, find it's equivalent value on another scale. **/
+
+            float first_scale_length = first_scale_max - first_scale_min;
+            float second_scale_length = second_scale_max - second_scale_min;
+
+            // Shift to Origin
+            float offset_value = old_value - first_scale_min;
+            // Normalise
+            float normalised_value = offset_value / first_scale_length;
+            // Upscale
+            float upscaled_value = normalised_value * second_scale_length;
+            // Shift from Origin
+            float new_value = upscaled_value + second_scale_min;
+
+            return new_value;
+        }
     }
     public class monoFunctions : MonoBehaviour {
         public static void createButton(string name, Action onClick, GameObject prefab, GameObject parent) {
