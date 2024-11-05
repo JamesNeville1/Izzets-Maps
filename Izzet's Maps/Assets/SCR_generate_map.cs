@@ -87,11 +87,9 @@ public class SCR_generate_map : MonoBehaviour {
     }
     #region Buttons
     public void WalkCycleButton() {
-        //CreateBlank();
         //WalkCycleMain();
     }
     public void PerlinNoiseButton() {
-        //CreateBlank();
         PerlinNoiseMain();
     }
     public void OnUpdateField(TMP_InputField field,Action<int> action, int max, int min = 0) {
@@ -123,59 +121,45 @@ public class SCR_generate_map : MonoBehaviour {
 
         Texture2D texture = new Texture2D(width, height);
 
-        float yCounter = 0f;
-        int x = 0;
-        for (int i = 0; i < texture.GetPixels().Length; i++) {
-            int y = Mathf.FloorToInt(Mathf.Round(yCounter * 10.0f) * .1f);
+        for (int xTest = 0; xTest < width; xTest++) {
+            for (int yTest = 0; yTest < width; yTest++) {
+                int id = GetPerlinID(new Vector2(yTest, xTest), rand); //(Across x, Up y)
 
-            Debug.Log($"Y int: {y}");
-            
-            int id = GetPerlinID(new Vector2(y, x), rand); //(Across x, Up y)
+                if (id == 0) {
+                    texture.SetPixel(yTest, xTest, background);
+                    //Debug.Log($"x: {x}, y: {y}, colour: {background}");
+                }
+                else {
+                    //Base Colour
+                    Color scaledColour = background;
 
-            if (id == 0) {
-                texture.SetPixel(y, x, background);
-                //Debug.Log($"x: {x}, y: {y}, colour: {background}");
-            }
-            else {
-                //Base Colour
-                Color scaledColour = background;
+                    //Get HSV
+                    float h;
+                    float s;
+                    float v;
+                    Color.RGBToHSV(scaledColour, out h, out s, out v);
 
-                //Get HSV
-                float h;
-                float s;
-                float v;
-                Color.RGBToHSV(scaledColour, out h, out s,  out v);
+                    //Scale to 360
+                    h *= 360;
 
-                //Scale to 360
-                h *= 360;
+                    //Get new hue using id
+                    h = h - (scaleHueBy * id);
 
-                //Get new hue using id
-                h =  h - (scaleHueBy * id);
+                    //
+                    h = Mathf.Clamp(h, 0, 360);
 
-                //
-                h = Mathf.Clamp(h, 0, 360);
+                    //Back to normalised
+                    h /= 360;
 
-                //Back to normalised
-                h /= 360;
+                    //Convert back
+                    scaledColour = Color.HSVToRGB(h, s, v);
 
-                //Convert back
-                scaledColour = Color.HSVToRGB(h, s, v);
+                    //Set
+                    texture.SetPixel(yTest, xTest, scaledColour);
 
-                //Set
-                texture.SetPixel(y, x, scaledColour);
-
-                //Log
-                //Debug.Log($"x: {x}, y: {y}, colour: {scaledColour}");
-            }
-
-            //texture.SetPixel(0, 0, Color.black);
-            Debug.Log($"Y Counter Float {yCounter}");
-            
-            
-            yCounter = yCounter + (1f / width); //
-            x++;
-            if (x > width -1) {
-                x = 0;
+                    //Log
+                    Debug.Log($"x: {xTest}, y: {yTest}, colour: {scaledColour}");
+                }
             }
         }
 
@@ -194,36 +178,33 @@ public class SCR_generate_map : MonoBehaviour {
         float clamp_perlin = Mathf.Clamp01(raw_perlin);
         float scaled_perlin = clamp_perlin * perlinScale;
 
-        //if (scaled_perlin == perlinScale) {
-        //    scaled_perlin = (perlinScale - 1);
-        //}
         return Mathf.RoundToInt(scaled_perlin);
     }
 
-    //private void WalkCycleMain() {
-    //    //Generate Map, iterate until completed
-    //    Vector2 currentPos = ReturnStartingPos();
+    //private void walkcyclemain() {
+    //    //generate map, iterate until completed
+    //    Vector2 currentpos = Returnstartingpos();
 
-    //    mapData[currentPos] = tileColours[1];
+    //    mapdata[currentpos] = tilecolours[1];
 
-    //    int currentIslandSize = 0;
+    //    int currentislandsize = 0;
     //    for (int i = 0; i < iterations; i++) {
-    //        Vector2 dir = ReturnRandomDir();
-    //        if (mapData.ContainsKey(currentPos + dir)) {
-    //            if(currentIslandSize <= islandSize) {
-    //                currentPos = currentPos + dir;
-    //                currentIslandSize++;
+    //        vector2 dir = returnrandomdir();
+    //        if (mapdata.containskey(currentpos + dir)) {
+    //            if (currentislandsize <= islandsize) {
+    //                currentpos = currentpos + dir;
+    //                currentislandsize++;
     //            }
     //            else {
-    //                currentPos = ReturnRandomTile();
-    //                currentIslandSize = 0;
+    //                currentpos = returnrandomtile();
+    //                currentislandsize = 0;
     //            }
     //        }
     //        else {
-    //            currentPos = ReturnRandomTile();
-    //            currentIslandSize = 0;
+    //            currentpos = returnrandomtile();
+    //            currentislandsize = 0;
     //        }
-    //        mapData[currentPos] = tileColours[1];
+    //        mapdata[currentpos] = tilecolours[1];
     //    }
     //}
     //private Vector2 ReturnStartingPos() {
@@ -231,13 +212,10 @@ public class SCR_generate_map : MonoBehaviour {
     //    if (startInCentre) currentPos = ReturnCentre();
     //    else currentPos = ReturnRandomTile();
 
-    //    currentPos.x = MathF.Round(currentPos.x);
-    //    currentPos.y = MathF.Round(currentPos.y);
-
     //    return currentPos;
     //}
     //private Vector2 ReturnCentre() {
-    //    Vector2 v = (mapData.Keys.Last() + mapData.Keys.First())/2;
+    //    Vector2 v = (mapData.Keys.Last() + mapData.Keys.First()) / 2;
     //    return v;
     //}
 
@@ -246,9 +224,10 @@ public class SCR_generate_map : MonoBehaviour {
     //    return v;
     //}
 
-    //private Vector2 ReturnRandomDir() {
+    //private Vector2 ReturnRandomDir() { //Make Seeded
     //    int i = UnityEngine.Random.Range(1, 5);
-    //    switch (i) {
+    //    switch (i)
+    //    {
     //        case 1: return Vector2.left;
     //        case 2: return Vector2.right;
     //        case 3: return Vector2.up;
@@ -256,19 +235,6 @@ public class SCR_generate_map : MonoBehaviour {
     //    }
     //    return Vector2.left;
     //}
-    //private void createblank()
-    //{
-    //    if (size < 2) size = 2;
-    //    height = size;
-    //    width = size;
-    //    for (int x = 1; x < width + 1; x++)
-    //    {
-    //        for (int y = 1; y < height + 1; y++)
-    //        {
-    //            vector2 tilepos = new vector2(x, y);
-    //            mapdata.add(tilepos, tilecolours[0]);
-    //        }
-    //    }
-    //}
+
     #endregion
 }
