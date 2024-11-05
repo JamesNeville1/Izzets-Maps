@@ -14,6 +14,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using com.spacepuppy;
 
 public class SCR_generate_map : MonoBehaviour {
 
@@ -37,6 +38,9 @@ public class SCR_generate_map : MonoBehaviour {
     private int perlinScale;
 
     [Tooltip("")][SerializeField]
+    private int scaleHueBy;
+
+    [Tooltip("")][SerializeField]
     private int islandSize;
 
     [Tooltip("")][SerializeField]
@@ -45,11 +49,8 @@ public class SCR_generate_map : MonoBehaviour {
     private int iterationsMax;
     private int islandSizeMax;
 
-
     [Tooltip("")][SerializeField]
     private Color background;
-    [Tooltip("")][SerializeField]
-    private Color tiles;
 
     [Tooltip("Should start in centre? If true begin in centre, if false begin with random tile")][SerializeField]
     private bool startInCentre;
@@ -122,19 +123,56 @@ public class SCR_generate_map : MonoBehaviour {
 
         Texture2D texture = new Texture2D(width, height);
 
-        float yCounter = 0.0f;
+        float yCounter = 0f;
         int x = 0;
         for (int i = 0; i < texture.GetPixels().Length; i++) {
-            int y = Mathf.FloorToInt(yCounter);
-            Debug.Log($"x: {x}, y: {y}");
+            int y = Mathf.FloorToInt(Mathf.Round(yCounter * 10.0f) * .1f);
 
-            int id = GetPerlinID(new Vector2(x, y), rand);
-
-            if (id == 0) texture.SetPixel(x, y, background);
-            else texture.SetPixel(x, y, tiles);
-
-            yCounter = yCounter + (1.0f / width);
+            Debug.Log($"Y int: {y}");
             
+            int id = GetPerlinID(new Vector2(y, x), rand); //(Across x, Up y)
+
+            if (id == 0) {
+                texture.SetPixel(y, x, background);
+                //Debug.Log($"x: {x}, y: {y}, colour: {background}");
+            }
+            else {
+                //Base Colour
+                Color scaledColour = background;
+
+                //Get HSV
+                float h;
+                float s;
+                float v;
+                Color.RGBToHSV(scaledColour, out h, out s,  out v);
+
+                //Scale to 360
+                h *= 360;
+
+                //Get new hue using id
+                h =  h - (scaleHueBy * id);
+
+                //
+                h = Mathf.Clamp(h, 0, 360);
+
+                //Back to normalised
+                h /= 360;
+
+                //Convert back
+                scaledColour = Color.HSVToRGB(h, s, v);
+
+                //Set
+                texture.SetPixel(y, x, scaledColour);
+
+                //Log
+                //Debug.Log($"x: {x}, y: {y}, colour: {scaledColour}");
+            }
+
+            //texture.SetPixel(0, 0, Color.black);
+            Debug.Log($"Y Counter Float {yCounter}");
+            
+            
+            yCounter = yCounter + (1f / width); //
             x++;
             if (x > width -1) {
                 x = 0;
@@ -156,10 +194,10 @@ public class SCR_generate_map : MonoBehaviour {
         float clamp_perlin = Mathf.Clamp01(raw_perlin);
         float scaled_perlin = clamp_perlin * perlinScale;
 
-        if (scaled_perlin == perlinScale) {
-            scaled_perlin = (perlinScale - 1);
-        }
-        return Mathf.FloorToInt(scaled_perlin);
+        //if (scaled_perlin == perlinScale) {
+        //    scaled_perlin = (perlinScale - 1);
+        //}
+        return Mathf.RoundToInt(scaled_perlin);
     }
 
     //private void WalkCycleMain() {

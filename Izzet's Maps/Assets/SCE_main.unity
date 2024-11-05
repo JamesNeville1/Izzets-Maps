@@ -292,11 +292,11 @@ MonoBehaviour:
   height: 0
   width: 0
   iterations: 0
-  perlinScale: 100
+  perlinScale: 6
+  scaleHueBy: 12
   islandSize: 0
   sizeMax: 400
-  background: {r: 0.3584906, g: 0, b: 0.27777416, a: 1}
-  tiles: {r: 0, g: 1, b: 0.563025, a: 1}
+  background: {r: 0, g: 0.38496572, b: 0.735849, a: 1}
   startInCentre: 1
   buttonsParent: {fileID: 1772290780}
   buttonPrefab: {fileID: 9036815834130199037, guid: df81474a38d50b940b377c6d5a10935c, type: 3}
