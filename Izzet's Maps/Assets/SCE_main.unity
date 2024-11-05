@@ -296,8 +296,11 @@ MonoBehaviour:
   scaleHueBy: 20
   islandSize: 0
   sizeMax: 400
-  background: {r: 0.19607843, g: 0.53333336, b: 0.8509804, a: 1}
-  startInCentre: 1
+  iterationsMax: 1000000
+  islandSizeMax: 100000
+  backgroundPerlin: {r: 0.19607843, g: 0.53333336, b: 0.8509804, a: 1}
+  backgroundRandomWalk: {r: 0.254717, g: 0.111739054, b: 0.111739054, a: 1}
+  tilesRandomWalk: {r: 0.3962264, g: 0.25978997, b: 0.25978997, a: 1}
   buttonsParent: {fileID: 1772290780}
   buttonPrefab: {fileID: 9036815834130199037, guid: df81474a38d50b940b377c6d5a10935c, type: 3}
   fieldParent: {fileID: 1716616366}

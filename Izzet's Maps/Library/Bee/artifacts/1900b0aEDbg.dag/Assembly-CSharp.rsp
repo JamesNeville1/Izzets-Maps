@@ -420,7 +420,6 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.19f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.19f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.19f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
-"Assets/Plugin/ColorHSV.cs"
 "Assets/SCR_generate_map.cs"
 "Assets/SCR_utils.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
