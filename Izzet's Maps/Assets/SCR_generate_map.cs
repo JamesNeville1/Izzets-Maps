@@ -143,7 +143,7 @@ public class SCR_generate_map : MonoBehaviour {
     }
     public void ExportButton()
     {
-        SCR_utils.functions.InitiateDownload();
+        SCR_utils.functions.InitiateDownload((Texture2D) map.texture);
     }
     public void OnUpdateField(TMP_InputField field,Action<int> action, int max, int min = 0) {
         int input = SCR_utils.functions.validateIntFromString(field.text);

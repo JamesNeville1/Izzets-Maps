@@ -186,7 +186,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.35374388, g: 0.40796575, b: 0.41509432, a: 0}
+  m_BackGroundColor: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -348,12 +348,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 1709124764}
-  sprite: {fileID: 21300000, guid: 32863a8fcbd188c40a5ba4e1e39c09b3, type: 3}
-  height: 0
-  width: 0
   perlinScale: 9
   scaleHueBy: 20
-  input: 0
   perlinNoiseRestrictions:
     sizeMax: 100
     inputMax: 80

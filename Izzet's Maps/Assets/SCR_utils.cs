@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class SCR_utils {
@@ -34,9 +36,11 @@ public class SCR_utils {
             return valid;
         }
 
-        public static void InitiateDownload()
+        public static void InitiateDownload(Texture2D raw)
         {
-            ScreenCapture.CaptureScreenshot("test.png");
+            byte[] bytes = ImageConversion.EncodeToPNG(raw);
+
+            
         }
 
     }
