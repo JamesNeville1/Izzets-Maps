@@ -8,7 +8,6 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class SCR_utils {
     public class customAttributes {
@@ -34,24 +33,12 @@ public class SCR_utils {
 
             return valid;
         }
-        public static float ConvertBetweenScales_original(float old_value, float first_scale_min, float first_scale_max, float second_scale_min, float second_scale_max)
+
+        public static void InitiateDownload()
         {
-            /** Given a chosen value on one scale, find it's equivalent value on another scale. **/
-
-            float first_scale_length = first_scale_max - first_scale_min;
-            float second_scale_length = second_scale_max - second_scale_min;
-
-            // Shift to Origin
-            float offset_value = old_value - first_scale_min;
-            // Normalise
-            float normalised_value = offset_value / first_scale_length;
-            // Upscale
-            float upscaled_value = normalised_value * second_scale_length;
-            // Shift from Origin
-            float new_value = upscaled_value + second_scale_min;
-
-            return new_value;
+            ScreenCapture.CaptureScreenshot("test.png");
         }
+
     }
     public class monoFunctions : MonoBehaviour {
         public static void createButton(string name, Action onClick, GameObject prefab, GameObject parent) {
@@ -68,6 +55,13 @@ public class SCR_utils {
             newField.transform.SetParent(parent.transform);
             newField.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = name;
             return newField;
+        }
+        public static TMP_Text createText(string info, string inspectorName, GameObject prefab, GameObject parent)
+        {
+            TMP_Text newText = Instantiate(prefab, parent.transform).GetComponent<TMP_Text>();
+            newText.gameObject.name = inspectorName + " Text";
+            newText.text = info;
+            return newText;
         }
     }
 }

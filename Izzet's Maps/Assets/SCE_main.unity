@@ -242,6 +242,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &611760787
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 611760788}
+  - component: {fileID: 611760789}
+  m_Layer: 5
+  m_Name: Info
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &611760788
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611760787}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1774553441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -60, y: -30}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 1, y: 1}
+--- !u!114 &611760789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611760787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 150, y: 52.5}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &715249516
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,13 +351,15 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 32863a8fcbd188c40a5ba4e1e39c09b3, type: 3}
   height: 0
   width: 0
-  iterations: 0
   perlinScale: 9
   scaleHueBy: 20
-  islandSize: 0
-  sizeMax: 400
-  iterationsMax: 1000000
-  islandSizeMax: 100000
+  input: 0
+  perlinNoiseRestrictions:
+    sizeMax: 100
+    inputMax: 80
+  randomWalkRestrictions:
+    sizeMax: 1000
+    inputMax: 10000000
   backgroundPerlin: {r: 0.19607843, g: 0.53333336, b: 0.8509804, a: 1}
   backgroundRandomWalk: {r: 0.254717, g: 0.111739054, b: 0.111739054, a: 1}
   tilesRandomWalk: {r: 0.3962264, g: 0.25978997, b: 0.25978997, a: 1}
@@ -305,6 +367,8 @@ MonoBehaviour:
   buttonPrefab: {fileID: 9036815834130199037, guid: df81474a38d50b940b377c6d5a10935c, type: 3}
   fieldParent: {fileID: 1716616366}
   fieldPrefab: {fileID: 1052352507505881775, guid: 7025b8fe5cf740049a39f197054f88c1, type: 3}
+  infoParent: {fileID: 611760787}
+  infoPrefab: {fileID: 172027478625225236, guid: d634e4cd0782d9d42adecf33c6477429, type: 3}
 --- !u!1 &1709124762
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +595,7 @@ RectTransform:
   - {fileID: 1709124763}
   - {fileID: 1772290781}
   - {fileID: 1716616367}
+  - {fileID: 611760788}
   m_Father: {fileID: 715249517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

@@ -1,55 +1,52 @@
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Profiling.LowLevel;
-using Unity.VisualScripting;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
-using UnityEngine.Diagnostics;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Unity.Mathematics;
 
 public class SCR_generate_map : MonoBehaviour {
 
-    [Header("Require Dev Input")]
+    #region Structs & Enum
 
+    [System.Serializable]
+    struct GenerationSystemRestrictions
+    {
+        public int sizeMax;
+        public int inputMax;
+    };
+    enum GenerationID
+    {
+        PERLIN_NOISE,
+        RANDOM_WALK
+    };
+
+    #endregion
+
+    #region Vars
+
+    [Header("Require Dev Input")]
     [Tooltip("Tile needed to generate")][SerializeField]
     private RawImage map;
-
-    [Tooltip("")][SerializeField]
-    private Sprite sprite;
-
-    [Tooltip("Size of grid X")] [SerializeField]
-    private int height;
-    [Tooltip("Size of grid Y")] [SerializeField]
-    private int width;
-
-    [Tooltip("Number of iterations while generating")][SerializeField]
-    private int iterations;
 
     [Tooltip("")][SerializeField]
     private int perlinScale;
 
     [Tooltip("")][SerializeField]
     private int scaleHueBy;
+    //
 
-    [Tooltip("")][SerializeField]
-    private int islandSize;
 
     [Header("Max (No Extreme Loading)")]
     [Tooltip("")][SerializeField]
+    private GenerationSystemRestrictions perlinNoiseRestrictions;
+    [Tooltip("")][SerializeField]
+    private GenerationSystemRestrictions randomWalkRestrictions;
+
+    private int inputMax;
     private int sizeMax;
-    [Tooltip("")][SerializeField]
-    private int iterationsMax;
-    [Tooltip("")][SerializeField]
-    private int islandSizeMax;
+    //
 
     [Header("Colours")]
     [Tooltip("")][SerializeField]
@@ -58,6 +55,8 @@ public class SCR_generate_map : MonoBehaviour {
     private Color backgroundRandomWalk;
     [Tooltip("")][SerializeField]
     private Color tilesRandomWalk;
+
+    //
 
     [Header("UI")]
     [Tooltip("")][SerializeField]
@@ -68,33 +67,83 @@ public class SCR_generate_map : MonoBehaviour {
     private GameObject fieldParent;
     [Tooltip("")][SerializeField]
     private GameObject fieldPrefab;
+    [Tooltip("")][SerializeField]
+    private GameObject infoParent;
+    [Tooltip("")][SerializeField]
+    private GameObject infoPrefab;
 
-    [Header("")]
     TMP_InputField sizeField;
-    TMP_InputField iterationField;
-    TMP_InputField islandSizeField;
+    TMP_InputField inputField;
+    TMP_Text currentGenerationSystem;
 
-    private void Start() {
+    //MAIN VARS HERE
+    private int input;
+    private int height;
+    private int width;
+    private GenerationID generationID = GenerationID.PERLIN_NOISE;
+
+    #endregion
+
+    private void Start()
+    {
         buttonsParent = GameObject.Find("Buttons");
-        SCR_utils.monoFunctions.createButton("Walk Cycle", WalkCycleButton, buttonPrefab, buttonsParent);
+        SCR_utils.monoFunctions.createButton("Random Walk", RandomWalkButton, buttonPrefab, buttonsParent);
         SCR_utils.monoFunctions.createButton("Perlin Noise", PerlinNoiseButton, buttonPrefab, buttonsParent);
-        //SCR_utils.monoFunctions.createButton("Save As", DisplayAsImage, buttonPrefab, buttonsParent); //ToDo
+        SCR_utils.monoFunctions.createButton("Generate", GenerateButton, buttonPrefab, buttonsParent);
+        SCR_utils.monoFunctions.createButton("Export", ExportButton, buttonPrefab, buttonsParent); //ToDo
 
         fieldParent = GameObject.Find("Fields");
         sizeField = SCR_utils.monoFunctions.createField("Size Field", fieldPrefab, fieldParent);
-        iterationField = SCR_utils.monoFunctions.createField("Iteration Field", fieldPrefab, fieldParent);
-        islandSizeField = SCR_utils.monoFunctions.createField("Island Size Field", fieldPrefab, fieldParent);
-        sizeField.onEndEdit.AddListener(delegate { OnUpdateField(sizeField, UpdateSize, sizeMax, 2); });
-        iterationField.onEndEdit.AddListener(delegate { OnUpdateField(iterationField, UpdateIteration, iterationsMax); });
-        islandSizeField.onEndEdit.AddListener(delegate { OnUpdateField(islandSizeField, UpdateIslandSize, islandSizeMax); });
+        inputField = SCR_utils.monoFunctions.createField("Input Field", fieldPrefab, fieldParent);
+        sizeField.onEndEdit.AddListener(delegate { OnUpdateField(sizeField, UpdateSizeField, sizeMax, 2); });
+        inputField.onEndEdit.AddListener(delegate { OnUpdateField(inputField, UpdateInputField, inputMax); });
+
+        infoParent = GameObject.Find("Info");
+        currentGenerationSystem = SCR_utils.monoFunctions.createText("", "Current Generation System", infoPrefab, infoParent);
+
+        PerlinNoiseButton();
     }
-    #region Buttons
-    public void WalkCycleButton() {
-        walkcyclemain();
+
+    #region UI
+    public void RandomWalkButton()
+    {
+        generationID = GenerationID.RANDOM_WALK;
+
+        inputMax = randomWalkRestrictions.inputMax;
+        sizeMax = randomWalkRestrictions.sizeMax;
+
+        inputField.onEndEdit.Invoke("");
+        sizeField.onEndEdit.Invoke("");
+
+        currentGenerationSystem.text = generationID.ToString();
     }
-    public void PerlinNoiseButton() {
-        islandSizeField.gameObject.SetActive(true);
-        PerlinNoiseMain();
+    public void PerlinNoiseButton()
+    {
+        generationID = GenerationID.PERLIN_NOISE;
+
+        inputMax = perlinNoiseRestrictions.inputMax;
+        sizeMax = perlinNoiseRestrictions.sizeMax;
+
+        inputField.onEndEdit.Invoke("");
+        sizeField.onEndEdit.Invoke("");
+
+        currentGenerationSystem.text = generationID.ToString();
+    }
+    public void GenerateButton()
+    {
+        switch (generationID)
+        {
+            case GenerationID.PERLIN_NOISE:
+                PerlinNoiseMain();
+                break;
+            case GenerationID.RANDOM_WALK:
+                RandomWalkMain();
+                break;
+        }
+    }
+    public void ExportButton()
+    {
+        SCR_utils.functions.InitiateDownload();
     }
     public void OnUpdateField(TMP_InputField field,Action<int> action, int max, int min = 0) {
         int input = SCR_utils.functions.validateIntFromString(field.text);
@@ -105,35 +154,38 @@ public class SCR_generate_map : MonoBehaviour {
 
         action(input);
     }
-    public void UpdateSize(int newValue) {
+    public void UpdateSizeField(int newValue) 
+    {
         width = newValue;
         height = newValue;
     }
-    public void UpdateIteration(int newValue) {
-        iterations = newValue;
-    }
-    public void UpdateIslandSize(int newValue) {
-        islandSize = newValue;
-    }
-    public void Reload() {
-        SceneManager.LoadScene(0);
+    public void UpdateInputField(int newValue) 
+    {
+        input = newValue;
     }
     #endregion
-    #region Main
-    private void PerlinNoiseMain() {
+
+    #region Perlin Noise
+
+    private void PerlinNoiseMain() 
+    {
         Vector2 rand = new Vector2(UnityEngine.Random.Range(1,10000), UnityEngine.Random.Range(1, 10000));
 
         Texture2D texture = new Texture2D(width, height);
 
-        for (int xTest = 0; xTest < width; xTest++) {
-            for (int yTest = 0; yTest < width; yTest++) {
+        for (int xTest = 0; xTest < width; xTest++) 
+        {
+            for (int yTest = 0; yTest < width; yTest++) 
+            {
                 int id = GetPerlinID(new Vector2(yTest, xTest), rand); //(Across x, Up y)
 
-                if (id == 0) {
+                if (id == 0) 
+                {
                     texture.SetPixel(yTest, xTest, backgroundPerlin);
                     //Debug.Log($"x: {x}, y: {y}, colour: {background}");
                 }
-                else {
+                else 
+                {
                     //Base Colour
                     Color scaledColour = backgroundPerlin;
 
@@ -162,7 +214,7 @@ public class SCR_generate_map : MonoBehaviour {
                     texture.SetPixel(yTest, xTest, scaledColour);
 
                     //Log
-                    Debug.Log($"x: {xTest}, y: {yTest}, colour: {scaledColour}");
+                    //Debug.Log($"x: {xTest}, y: {yTest}, colour: {scaledColour}");
                 }
             }
         }
@@ -174,10 +226,11 @@ public class SCR_generate_map : MonoBehaviour {
 
         Camera.main.orthographicSize = 1;
     }
-    private int GetPerlinID(Vector2 v, Vector2 rand) {
+    private int GetPerlinID(Vector2 v, Vector2 rand) 
+    {
         float raw_perlin = Mathf.PerlinNoise(
-            (v.x + rand.x) / islandSize,
-            (v.y + rand.y) / islandSize
+            (v.x + rand.x) / input,
+            (v.y + rand.y) / input
         );
         float clamp_perlin = Mathf.Clamp01(raw_perlin);
         float scaled_perlin = clamp_perlin * perlinScale;
@@ -185,7 +238,12 @@ public class SCR_generate_map : MonoBehaviour {
         return Mathf.RoundToInt(scaled_perlin);
     }
 
-    private void walkcyclemain() {
+    #endregion
+
+    #region Random Walk
+
+    private void RandomWalkMain() 
+    {
         //generate map, iterate until completed
         int rand = UnityEngine.Random.Range(1, 10000);
 
@@ -195,13 +253,15 @@ public class SCR_generate_map : MonoBehaviour {
         Color[] pixels = Enumerable.Repeat(backgroundRandomWalk, width * height).ToArray();
         texture.SetPixels(pixels);
 
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < input; i++) 
+        {
             Vector2Int dir = ReturnRandomDir(rand);
 
             currentpos = currentpos + dir;
             bool atBounds = currentpos.x > width - 2 || currentpos.x < 1 || currentpos.y > height - 2 || currentpos.y < 1;
             
-            if (atBounds) { //texture..containskey(currentpos + dir)
+            if (atBounds) //texture..containskey(currentpos + dir)
+            {
                 currentpos = ReturnMid();
             }
             texture.SetPixel(currentpos.y, currentpos.x, tilesRandomWalk);
@@ -215,12 +275,14 @@ public class SCR_generate_map : MonoBehaviour {
         Camera.main.orthographicSize = 1;
     }
 
-    private Vector2Int ReturnMid() {
+    private Vector2Int ReturnMid() 
+    {
         Vector2Int v = new Vector2Int((width - 1) / 2, (height - 1) / 2);
         return v;
     }
 
-    private Vector2Int ReturnRandomDir(int randSeed) { //Make Seeded
+    private Vector2Int ReturnRandomDir(int randSeed) //Make Seeded
+    {
         int i = UnityEngine.Random.Range(1, 5);
         switch (i)
         {
@@ -233,4 +295,5 @@ public class SCR_generate_map : MonoBehaviour {
     }
 
     #endregion
+
 }
