@@ -351,8 +351,8 @@ MonoBehaviour:
   perlinScale: 9
   scaleHueBy: 20
   perlinNoiseRestrictions:
-    sizeMax: 100
-    inputMax: 80
+    sizeMax: 400
+    inputMax: 200
   randomWalkRestrictions:
     sizeMax: 1000
     inputMax: 10000000

@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,13 +9,14 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Runtime.InteropServices;
 
 public class SCR_utils {
-    public class customAttributes {
+    public class CustomAttributes {
         public class ReadOnlyAttribute : PropertyAttribute { }
     }
-    public class functions {
-        public static int validateIntFromString(string invalid, int max = 10000) {
+    public class Functions {
+        public static int ValidateIntFromString(string invalid, int max = 10000) {
             int valid = 0;
             string validString = "";
 
@@ -36,23 +36,31 @@ public class SCR_utils {
             return valid;
         }
 
-        public static void InitiateDownload(Texture2D raw)
+        [DllImport("__Internal")]
+        private static extern void DownloadImage(string base64Data, int length, string fileName); //.jslib handle
+
+        public static void ExportImage(Texture2D texture)
         {
-            byte[] bytes = ImageConversion.EncodeToPNG(raw);
+            //Convert the Texture2D to a PNG byte array
+            byte[] imageData = texture.EncodeToPNG();
+            imageData.Reverse();
 
-            
+            //Convert the byte array to a Base64 string
+            string base64Image = System.Convert.ToBase64String(imageData);
+
+            //Call the JavaScript function to trigger the download
+            DownloadImage(base64Image, base64Image.Length, "MapOutput.png");
         }
-
     }
-    public class monoFunctions : MonoBehaviour {
-        public static void createButton(string name, Action onClick, GameObject prefab, GameObject parent) {
+    public class MonoFunctions : MonoBehaviour {
+        public static void CreateButton(string name, Action onClick, GameObject prefab, GameObject parent) {
             Button newButton = Instantiate(prefab, parent.transform).GetComponent<Button>();
             newButton.gameObject.name = name + " Button";
             newButton.onClick.AddListener(delegate { onClick(); });
             newButton.transform.SetParent(parent.transform);
             newButton.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = name;
         }
-        public static TMP_InputField createField(string name, GameObject prefab, GameObject parent, Action onEndExit = null) {
+        public static TMP_InputField CreateField(string name, GameObject prefab, GameObject parent, Action onEndExit = null) {
             TMP_InputField newField = Instantiate(prefab, parent.transform).GetComponent<TMP_InputField>();
             newField.gameObject.name = name + " Field";
             if(onEndExit != null) newField.onEndEdit.AddListener(delegate { onEndExit(); });
@@ -60,7 +68,7 @@ public class SCR_utils {
             newField.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = name;
             return newField;
         }
-        public static TMP_Text createText(string info, string inspectorName, GameObject prefab, GameObject parent)
+        public static TMP_Text CreateText(string info, string inspectorName, GameObject prefab, GameObject parent)
         {
             TMP_Text newText = Instantiate(prefab, parent.transform).GetComponent<TMP_Text>();
             newText.gameObject.name = inspectorName + " Text";

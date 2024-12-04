@@ -1688,6 +1688,14 @@ void RegisterAllStrippedInternalCalls()
 
 	//End Registrations for type : UnityEngine.Hash128
 
+	//Start Registrations for type : UnityEngine.ImageConversion
+
+		//System.Void UnityEngine.ImageConversion::EncodeToPNG_Injected(System.IntPtr,UnityEngine.Bindings.BlittableArrayWrapper&)
+		void Register_UnityEngine_ImageConversion_EncodeToPNG_Injected();
+		Register_UnityEngine_ImageConversion_EncodeToPNG_Injected();
+
+	//End Registrations for type : UnityEngine.ImageConversion
+
 	//Start Registrations for type : UnityEngine.Input
 
 		//System.Boolean UnityEngine.Input::CheckDisabled()
@@ -2828,14 +2836,6 @@ void RegisterAllStrippedInternalCalls()
 
 	//End Registrations for type : UnityEngine.Screen
 
-	//Start Registrations for type : UnityEngine.ScreenCapture
-
-		//System.Void UnityEngine.ScreenCapture::CaptureScreenshot_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,System.Int32,UnityEngine.ScreenCapture/StereoScreenCaptureMode)
-		void Register_UnityEngine_ScreenCapture_CaptureScreenshot_Injected();
-		Register_UnityEngine_ScreenCapture_CaptureScreenshot_Injected();
-
-	//End Registrations for type : UnityEngine.ScreenCapture
-
 	//Start Registrations for type : UnityEngine.ScriptableObject
 
 		//System.IntPtr UnityEngine.ScriptableObject::CreateScriptableObjectInstanceFromType_Injected(System.Type,System.Boolean)
@@ -3405,6 +3405,10 @@ void RegisterAllStrippedInternalCalls()
 		//System.Void UnityEngine.Texture2D::GetPixelBilinearImpl_Injected(System.IntPtr,System.Int32,System.Int32,System.Single,System.Single,UnityEngine.Color&)
 		void Register_UnityEngine_Texture2D_GetPixelBilinearImpl_Injected();
 		Register_UnityEngine_Texture2D_GetPixelBilinearImpl_Injected();
+
+		//System.Void UnityEngine.Texture2D::GetPixelImpl_Injected(System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,UnityEngine.Color&)
+		void Register_UnityEngine_Texture2D_GetPixelImpl_Injected();
+		Register_UnityEngine_Texture2D_GetPixelImpl_Injected();
 
 		//System.Void UnityEngine.Texture2D::SetAllPixels32_Injected(System.IntPtr,UnityEngine.Bindings.ManagedSpanWrapper&,System.Int32)
 		void Register_UnityEngine_Texture2D_SetAllPixels32_Injected();

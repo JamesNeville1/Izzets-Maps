@@ -12,9 +12,6 @@ extern "C" void RegisterStaticallyLinkedModulesGranular()
 	void RegisterModule_Audio();
 	RegisterModule_Audio();
 
-	void RegisterModule_GraphicsStateCollectionSerializer();
-	RegisterModule_GraphicsStateCollectionSerializer();
-
 	void RegisterModule_HierarchyCore();
 	RegisterModule_HierarchyCore();
 
@@ -33,6 +30,9 @@ extern "C" void RegisterStaticallyLinkedModulesGranular()
 	void RegisterModule_JSONSerialize();
 	RegisterModule_JSONSerialize();
 
+	void RegisterModule_GraphicsStateCollectionSerializer();
+	RegisterModule_GraphicsStateCollectionSerializer();
+
 	void RegisterModule_Physics();
 	RegisterModule_Physics();
 
@@ -41,9 +41,6 @@ extern "C" void RegisterStaticallyLinkedModulesGranular()
 
 	void RegisterModule_RuntimeInitializeOnLoadManagerInitializer();
 	RegisterModule_RuntimeInitializeOnLoadManagerInitializer();
-
-	void RegisterModule_ScreenCapture();
-	RegisterModule_ScreenCapture();
 
 	void RegisterModule_TextRendering();
 	RegisterModule_TextRendering();
