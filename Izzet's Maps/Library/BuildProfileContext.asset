@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 15005, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ActiveProfile: {fileID: 0}
+  m_ActiveProfile: {fileID: 11400000, guid: 7c38583e49298da408500d6d00eebc49, type: 2}
   m_CachedEditorScriptingDefines: []
   m_LastRunnableBuildPathKeys: []

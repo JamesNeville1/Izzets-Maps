@@ -351,10 +351,10 @@ MonoBehaviour:
   perlinScale: 9
   scaleHueBy: 20
   perlinNoiseRestrictions:
-    sizeMax: 400
-    inputMax: 200
+    sizeMax: 3000
+    inputMax: 10
   randomWalkRestrictions:
-    sizeMax: 1000
+    sizeMax: 2000
     inputMax: 10000000
   backgroundPerlin: {r: 0.19607843, g: 0.53333336, b: 0.8509804, a: 1}
   backgroundRandomWalk: {r: 0.40392157, g: 0.3302688, b: 0.31223136, a: 1}
@@ -399,7 +399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 25}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1709124764

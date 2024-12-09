@@ -28,7 +28,9 @@ ScriptsOnlyBuild:
     - TMPro.TMP_StyleSheet
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
-    - TMPro.TMP_InputField
+    - TMPro.TMP_Settings
+    - TMPro.TMP_SpriteAsset
+    - TMPro.TMP_StyleSheet
     - TMPro.TextMeshProUGUI
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -43,8 +45,9 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.GridLayoutGroup
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
     - UnityEngine.UI.RawImage
-    - UnityEngine.UI.RectMask2D
+    - UnityEngine.UI.Text
   serializedClasses:
     Assembly-CSharp:
     - .SCR_generate_map/GenerationSystemRestrictions
@@ -56,11 +59,6 @@ ScriptsOnlyBuild:
     - TMPro.TMP_Character
     - TMPro.TMP_FontFeatureTable
     - TMPro.TMP_FontWeightPair
-    - TMPro.TMP_InputField/OnChangeEvent
-    - TMPro.TMP_InputField/SelectionEvent
-    - TMPro.TMP_InputField/SubmitEvent
-    - TMPro.TMP_InputField/TextSelectionEvent
-    - TMPro.TMP_InputField/TouchScreenKeyboardEvent
     - TMPro.TMP_Sprite
     - TMPro.TMP_SpriteCharacter
     - TMPro.TMP_SpriteGlyph
@@ -81,6 +79,10 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.AnimationTriggers
     - UnityEngine.UI.Button/ButtonClickedEvent
     - UnityEngine.UI.ColorBlock
+    - UnityEngine.UI.FontData
+    - UnityEngine.UI.InputField/EndEditEvent
+    - UnityEngine.UI.InputField/OnChangeEvent
+    - UnityEngine.UI.InputField/SubmitEvent
     - UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
     - UnityEngine.UI.Navigation
     - UnityEngine.UI.SpriteState
@@ -106,39 +108,39 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 26668}
+      Script: {instanceID: 26670}
     - Class: 114
-      Script: {instanceID: 26986}
+      Script: {instanceID: 26988}
     - Class: 114
-      Script: {instanceID: 27626}
+      Script: {instanceID: 27628}
     - Class: 114
-      Script: {instanceID: 28100}
+      Script: {instanceID: 28426}
     - Class: 114
-      Script: {instanceID: 28162}
+      Script: {instanceID: 29038}
     - Class: 114
-      Script: {instanceID: 28424}
+      Script: {instanceID: 29290}
     - Class: 114
-      Script: {instanceID: 29036}
+      Script: {instanceID: 29576}
     - Class: 114
-      Script: {instanceID: 29288}
+      Script: {instanceID: 31020}
     - Class: 114
-      Script: {instanceID: 29574}
+      Script: {instanceID: 31380}
     - Class: 114
-      Script: {instanceID: 31018}
+      Script: {instanceID: 31830}
     - Class: 114
-      Script: {instanceID: 31828}
+      Script: {instanceID: 32126}
     - Class: 114
-      Script: {instanceID: 32124}
+      Script: {instanceID: 32292}
     - Class: 114
-      Script: {instanceID: 32290}
+      Script: {instanceID: 32410}
     - Class: 114
-      Script: {instanceID: 32408}
+      Script: {instanceID: 32736}
     - Class: 114
-      Script: {instanceID: 33232}
+      Script: {instanceID: 33234}
     - Class: 114
-      Script: {instanceID: 33418}
+      Script: {instanceID: 33420}
     - Class: 114
-      Script: {instanceID: 33490}
+      Script: {instanceID: 33492}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1329,4 +1331,4 @@ ScriptsOnlyBuild:
   platform: 20
   scenePathNames:
   - Assets/SCE_main.unity
-  playerPath: C:/Users/n013403n/Documents/GitHub/Izzets-Maps/Final Web Build
+  playerPath: C:/Users/n013403n/Documents/GitHub/Izzets-Maps/Web Build (Itch)

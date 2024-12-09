@@ -169,7 +169,6 @@ public class SCR_generate_map : MonoBehaviour {
         input = Mathf.Clamp(input, min, max);
 
         field.text = input.ToString();
-        //field.onSelect.Invoke("");
 
         action(input);
     }
@@ -244,10 +243,12 @@ public class SCR_generate_map : MonoBehaviour {
     }
     private int GetPerlinID(Vector2 v, Vector2 rand) 
     {
+        int magnification = input * (height / 10);
+
         //Calc Perlin
         float perlin = Mathf.PerlinNoise(
-            (v.x + rand.x) / input,
-            (v.y + rand.y) / input
+            (v.x + rand.x) / magnification,
+            (v.y + rand.y) / magnification
         );
         
         //Scale to Range
