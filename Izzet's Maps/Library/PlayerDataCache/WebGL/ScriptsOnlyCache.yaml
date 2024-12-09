@@ -28,9 +28,6 @@ ScriptsOnlyBuild:
     - TMPro.TMP_StyleSheet
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
-    - TMPro.TMP_Settings
-    - TMPro.TMP_SpriteAsset
-    - TMPro.TMP_StyleSheet
     - TMPro.TextMeshProUGUI
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -108,39 +105,39 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 26670}
+      Script: {instanceID: 26668}
     - Class: 114
-      Script: {instanceID: 26988}
+      Script: {instanceID: 26986}
     - Class: 114
-      Script: {instanceID: 27628}
+      Script: {instanceID: 27626}
     - Class: 114
-      Script: {instanceID: 28426}
+      Script: {instanceID: 28424}
     - Class: 114
-      Script: {instanceID: 29038}
+      Script: {instanceID: 29036}
     - Class: 114
-      Script: {instanceID: 29290}
+      Script: {instanceID: 29288}
     - Class: 114
-      Script: {instanceID: 29576}
+      Script: {instanceID: 29574}
     - Class: 114
-      Script: {instanceID: 31020}
+      Script: {instanceID: 31018}
     - Class: 114
-      Script: {instanceID: 31380}
+      Script: {instanceID: 31378}
     - Class: 114
-      Script: {instanceID: 31830}
+      Script: {instanceID: 31828}
     - Class: 114
-      Script: {instanceID: 32126}
+      Script: {instanceID: 32124}
     - Class: 114
-      Script: {instanceID: 32292}
+      Script: {instanceID: 32290}
     - Class: 114
-      Script: {instanceID: 32410}
+      Script: {instanceID: 32408}
     - Class: 114
-      Script: {instanceID: 32736}
+      Script: {instanceID: 32734}
     - Class: 114
-      Script: {instanceID: 33234}
+      Script: {instanceID: 33232}
     - Class: 114
-      Script: {instanceID: 33420}
+      Script: {instanceID: 33418}
     - Class: 114
-      Script: {instanceID: 33492}
+      Script: {instanceID: 33490}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128

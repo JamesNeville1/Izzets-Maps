@@ -25,8 +25,6 @@ extern void SCR_generate_map__ctor_mA7CCCC53ABB33EE72FD0A1E70C625ED20A6909A7 (vo
 extern void SCR_generate_map_U3CStartU3Eb__27_0_m14D8236CD27E14459189C1C8D4012654DE179072 (void);
 extern void SCR_generate_map_U3CStartU3Eb__27_1_m181CBCC3D97D25AA3C39453B5C61C4530D1DFDA9 (void);
 extern void SCR_utils__ctor_m0406D14DF6603A9F4F2C32C8CE20C159C2581D34 (void);
-extern void CustomAttributes__ctor_m7ABCC90197D8B7FDB1EF10A603B10E1CB1249E9A (void);
-extern void ReadOnlyAttribute__ctor_mD4672382C7E1D1D43589CC010B285126B958C7F8 (void);
 extern void Functions_ValidateIntFromString_m5A2CE55EA83E82307B0179CDD9CBA5FEC7DE024B (void);
 extern void Functions_DownloadImage_mD5A1D8F604BAAD52096B68B73404C3239172F988 (void);
 extern void Functions_ExportImage_m49056401CFF780985A9C8A23D0DF252A5711202D (void);
@@ -304,7 +302,7 @@ extern void U3CWarpTextU3Ed__8_MoveNext_mCE7A826C5E4854C2C509C77BD18F5A9B6D691B0
 extern void U3CWarpTextU3Ed__8_System_Collections_Generic_IEnumeratorU3CSystem_ObjectU3E_get_Current_mD80368E9B7E259311C03E406B75161ED6F7618E3 (void);
 extern void U3CWarpTextU3Ed__8_System_Collections_IEnumerator_Reset_m07746C332D2D8CE5DEA59873C26F2FAD4B369B42 (void);
 extern void U3CWarpTextU3Ed__8_System_Collections_IEnumerator_get_Current_m71D7F84D9DEF63BEC6B44866515DDCF35B142A19 (void);
-static Il2CppMethodPointer s_methodPointers[297] = 
+static Il2CppMethodPointer s_methodPointers[295] = 
 {
 	SCR_generate_map_Start_mC5C84A4054BC8E599F7304E6D443FB004C3D6FAC,
 	SCR_generate_map_RandomWalkButton_mA67DB29B6C136CE1D597D8347A7FA28281D205E2,
@@ -324,8 +322,6 @@ static Il2CppMethodPointer s_methodPointers[297] =
 	SCR_generate_map_U3CStartU3Eb__27_0_m14D8236CD27E14459189C1C8D4012654DE179072,
 	SCR_generate_map_U3CStartU3Eb__27_1_m181CBCC3D97D25AA3C39453B5C61C4530D1DFDA9,
 	SCR_utils__ctor_m0406D14DF6603A9F4F2C32C8CE20C159C2581D34,
-	CustomAttributes__ctor_m7ABCC90197D8B7FDB1EF10A603B10E1CB1249E9A,
-	ReadOnlyAttribute__ctor_mD4672382C7E1D1D43589CC010B285126B958C7F8,
 	Functions_ValidateIntFromString_m5A2CE55EA83E82307B0179CDD9CBA5FEC7DE024B,
 	Functions_DownloadImage_mD5A1D8F604BAAD52096B68B73404C3239172F988,
 	Functions_ExportImage_m49056401CFF780985A9C8A23D0DF252A5711202D,
@@ -604,7 +600,7 @@ static Il2CppMethodPointer s_methodPointers[297] =
 	U3CWarpTextU3Ed__8_System_Collections_IEnumerator_Reset_m07746C332D2D8CE5DEA59873C26F2FAD4B369B42,
 	U3CWarpTextU3Ed__8_System_Collections_IEnumerator_get_Current_m71D7F84D9DEF63BEC6B44866515DDCF35B142A19,
 };
-static const int32_t s_InvokerIndices[297] = 
+static const int32_t s_InvokerIndices[295] = 
 {
 	6600,
 	6600,
@@ -623,8 +619,6 @@ static const int32_t s_InvokerIndices[297] =
 	6600,
 	5215,
 	5215,
-	6600,
-	6600,
 	6600,
 	8919,
 	7995,
@@ -908,7 +902,7 @@ IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
 const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
 {
 	"Assembly-CSharp.dll",
-	297,
+	295,
 	s_methodPointers,
 	0,
 	NULL,

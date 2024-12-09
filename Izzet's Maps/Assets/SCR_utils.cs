@@ -12,9 +12,6 @@ using UnityEngine.UI;
 using System.Runtime.InteropServices;
 
 public class SCR_utils {
-    public class CustomAttributes {
-        public class ReadOnlyAttribute : PropertyAttribute { }
-    }
     public class Functions {
         public static int ValidateIntFromString(string invalid) {
             int valid = 0;
@@ -49,7 +46,7 @@ public class SCR_utils {
             string base64Image = System.Convert.ToBase64String(imageData);
 
             //Call the JavaScript function to trigger the download
-            DownloadImage(base64Image, base64Image.Length, "MapOutput.png");
+            DownloadImage(base64Image, base64Image.Length, "MapOutput.png"); //Only works on web, throws error in inspector
         }
     }
     public class MonoFunctions : MonoBehaviour {

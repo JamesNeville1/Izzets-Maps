@@ -147,21 +147,24 @@ public class SCR_generate_map : MonoBehaviour {
     }
     public void ExportButton()
     {
-        Texture2D imageToPass = new Texture2D(map.texture.height, map.texture.width);
-        Texture2D display = (Texture2D)map.texture;
-
-        //-90 degrees rot
-        for (int y = 0; y < map.texture.height; ++y)
+        if (map.texture != null)
         {
-            for (int x = 0; x < map.texture.width; ++x)
+            Texture2D imageToPass = new Texture2D(map.texture.height, map.texture.width);
+            Texture2D display = (Texture2D)map.texture;
+
+            //-90 degrees rot
+            for (int y = 0; y < map.texture.height; ++y)
             {
-                imageToPass.SetPixel(y, x, display.GetPixel(x, y));
+                for (int x = 0; x < map.texture.width; ++x)
+                {
+                    imageToPass.SetPixel(y, x, display.GetPixel(x, y));
+                }
             }
+
+            imageToPass.Apply();
+
+            SCR_utils.Functions.ExportImage(imageToPass);
         }
-
-        imageToPass.Apply();
-
-        SCR_utils.Functions.ExportImage(imageToPass);
     }
     public void OnUpdateField(InputField field,Action<int> action, int max, int min = 0) {
         int input = SCR_utils.Functions.ValidateIntFromString(field.text);
