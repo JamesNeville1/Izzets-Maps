@@ -16,7 +16,7 @@ public class SCR_utils {
         public class ReadOnlyAttribute : PropertyAttribute { }
     }
     public class Functions {
-        public static int ValidateIntFromString(string invalid, int max = 10000) {
+        public static int ValidateIntFromString(string invalid) {
             int valid = 0;
             string validString = "";
 
@@ -28,7 +28,7 @@ public class SCR_utils {
 
             if (validString.Length > 0) {
                 if(!int.TryParse(validString, out valid)) {
-                    valid = max;
+                    valid = int.MaxValue; //Input Cap, if I needed more I would convert to using "long" value
                 }
             }
             else valid = 0;
@@ -60,10 +60,9 @@ public class SCR_utils {
             newButton.transform.SetParent(parent.transform);
             newButton.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = name;
         }
-        public static TMP_InputField CreateField(string name, GameObject prefab, GameObject parent, Action onEndExit = null) {
-            TMP_InputField newField = Instantiate(prefab, parent.transform).GetComponent<TMP_InputField>();
+        public static InputField CreateField(string name, GameObject prefab, GameObject parent, Action onEndExit = null) {
+            InputField newField = Instantiate(prefab, parent.transform).GetComponent<InputField>();
             newField.gameObject.name = name + " Field";
-            if(onEndExit != null) newField.onEndEdit.AddListener(delegate { onEndExit(); });
             newField.transform.SetParent(parent.transform);
             newField.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = name;
             return newField;

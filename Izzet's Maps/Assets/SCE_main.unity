@@ -273,11 +273,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1774553441}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -60, y: -30}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -30}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &611760789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,9 +299,9 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 150, y: 52.5}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_Spacing: {x: 50, y: 0}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1 &715249516
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,12 +357,12 @@ MonoBehaviour:
     sizeMax: 1000
     inputMax: 10000000
   backgroundPerlin: {r: 0.19607843, g: 0.53333336, b: 0.8509804, a: 1}
-  backgroundRandomWalk: {r: 0.254717, g: 0.111739054, b: 0.111739054, a: 1}
-  tilesRandomWalk: {r: 0.3962264, g: 0.25978997, b: 0.25978997, a: 1}
+  backgroundRandomWalk: {r: 0.40392157, g: 0.3302688, b: 0.31223136, a: 1}
+  tilesRandomWalk: {r: 0.8666667, g: 0.73753333, b: 0.73753333, a: 1}
   buttonsParent: {fileID: 1772290780}
   buttonPrefab: {fileID: 9036815834130199037, guid: df81474a38d50b940b377c6d5a10935c, type: 3}
   fieldParent: {fileID: 1716616366}
-  fieldPrefab: {fileID: 1052352507505881775, guid: 7025b8fe5cf740049a39f197054f88c1, type: 3}
+  fieldPrefab: {fileID: 3938636386499692204, guid: e44ce24ada7a47444a1b2f181c178d46, type: 3}
   infoParent: {fileID: 611760787}
   infoPrefab: {fileID: 172027478625225236, guid: d634e4cd0782d9d42adecf33c6477429, type: 3}
 --- !u!1 &1709124762
@@ -392,7 +392,7 @@ RectTransform:
   m_GameObject: {fileID: 1709124762}
   m_LocalRotation: {x: 0.7071068, y: 0.7071068, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1774553441}
@@ -400,7 +400,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 375, y: 375}
+  m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1709124764
 MonoBehaviour:
@@ -468,11 +468,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1774553441}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -20, y: 20}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 1, y: 0}
 --- !u!114 &1716616368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,12 +491,12 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 8
-  m_StartCorner: 0
+  m_StartCorner: 3
   m_StartAxis: 1
-  m_CellSize: {x: 90, y: 52.5}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_CellSize: {x: 150, y: 52.5}
+  m_Spacing: {x: 15, y: 15}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1 &1772290780
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,7 +530,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 20, y: 20}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1772290782
@@ -553,9 +553,9 @@ MonoBehaviour:
   m_ChildAlignment: 6
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 90, y: 75}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
+  m_CellSize: {x: 150, y: 50}
+  m_Spacing: {x: 15, y: 15}
+  m_Constraint: 2
   m_ConstraintCount: 2
 --- !u!1 &1774553440
 GameObject:
@@ -632,7 +632,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96

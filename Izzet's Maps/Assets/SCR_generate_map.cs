@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 public class SCR_generate_map : MonoBehaviour {
 
@@ -73,8 +72,8 @@ public class SCR_generate_map : MonoBehaviour {
     [Tooltip("")][SerializeField]
     private GameObject infoPrefab;
 
-    TMP_InputField sizeField;
-    TMP_InputField inputField;
+    InputField sizeField; //TMP_InputField has formatting errors
+    InputField inputField;
     TMP_Text currentGenerationSystemText;
     TMP_Text sizeMaxText;
     TMP_Text inputMaxText;
@@ -96,15 +95,15 @@ public class SCR_generate_map : MonoBehaviour {
         SCR_utils.MonoFunctions.CreateButton("Export", ExportButton, buttonPrefab, buttonsParent); //ToDo
 
         fieldParent = GameObject.Find("Fields");
-        sizeField = SCR_utils.MonoFunctions.CreateField("Size Field", fieldPrefab, fieldParent);
         inputField = SCR_utils.MonoFunctions.CreateField("Input Field", fieldPrefab, fieldParent);
-        sizeField.onEndEdit.AddListener(delegate { OnUpdateField(sizeField, UpdateSizeField, sizeMax, 2); });
+        sizeField = SCR_utils.MonoFunctions.CreateField("Size Field", fieldPrefab, fieldParent);
         inputField.onEndEdit.AddListener(delegate { OnUpdateField(inputField, UpdateInputField, inputMax); });
+        sizeField.onEndEdit.AddListener(delegate { OnUpdateField(sizeField, UpdateSizeField, sizeMax, 2); });
 
         infoParent = GameObject.Find("Info");
-        currentGenerationSystemText = SCR_utils.MonoFunctions.CreateText("", "Current Generation System Text", infoPrefab, infoParent);
-        sizeMaxText = SCR_utils.MonoFunctions.CreateText("", "Size Max Text", infoPrefab, infoParent);
-        inputMaxText = SCR_utils.MonoFunctions.CreateText("", "Input Max Text", infoPrefab, infoParent);
+        currentGenerationSystemText = SCR_utils.MonoFunctions.CreateText("", "Current Generation System", infoPrefab, infoParent);
+        sizeMaxText = SCR_utils.MonoFunctions.CreateText("", "Size Max", infoPrefab, infoParent);
+        inputMaxText = SCR_utils.MonoFunctions.CreateText("", "Input Max", infoPrefab, infoParent);
 
         PerlinNoiseButton();
 
@@ -131,8 +130,8 @@ public class SCR_generate_map : MonoBehaviour {
         sizeField.onEndEdit.Invoke("");
 
         currentGenerationSystemText.text = generationID.ToString();
-        inputMaxText.text = "Input Max: \n" + inputMax.ToString();
-        sizeMaxText.text = "Size Max: \n" + sizeMax.ToString();
+        inputMaxText.text = "Input Max: " + inputMax.ToString();
+        sizeMaxText.text = "Size Max: " + sizeMax.ToString();
     }
     public void GenerateButton()
     {
@@ -164,12 +163,13 @@ public class SCR_generate_map : MonoBehaviour {
 
         SCR_utils.Functions.ExportImage(imageToPass);
     }
-    public void OnUpdateField(TMP_InputField field,Action<int> action, int max, int min = 0) {
+    public void OnUpdateField(InputField field,Action<int> action, int max, int min = 0) {
         int input = SCR_utils.Functions.ValidateIntFromString(field.text);
 
         input = Mathf.Clamp(input, min, max);
 
         field.text = input.ToString();
+        //field.onSelect.Invoke("");
 
         action(input);
     }
