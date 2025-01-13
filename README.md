@@ -112,6 +112,10 @@ map.texture = texture;
 ```
 <br /><br />
 
+Here are some output examples:
+![alt text](https://github.com/JamesNeville1/Izzets-Maps/blob/main/Izzet's%20Maps/MapOutput%20(2).png)
+![alt text](https://github.com/JamesNeville1/Izzets-Maps/blob/main/Izzet's%20Maps/MapOutput%20(4).png)
+
 ## Random Walk Algorithm:
 
 Firstly, we get the middle of the image and set the size of the image (Size Field).
@@ -195,4 +199,5 @@ map.texture = texture;
 ```
 <br /><br />
 
-This creates a very organic cave system from a top down perspective.
+This creates a very organic cave system from a top down perspective:
+![alt text](https://github.com/JamesNeville1/Izzets-Maps/blob/main/Izzet's%20Maps/MapOutput%20(1).png)
