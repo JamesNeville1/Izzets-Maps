@@ -2,6 +2,7 @@
 
 ### This is a map generator you can use to make your own images :)
 <br /><br />
+The main script can be found [here](https://github.com/JamesNeville1/Izzets-Maps/blob/main/Izzet's%20Maps/Assets/SCR_generate_map.cs).
 
 ## Perlin Noise Algorithm:
 
